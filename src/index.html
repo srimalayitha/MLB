@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Library</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .playlist {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .playlist h3 {
+            margin: 0 0 10px 0;
+        }
+
+        .playlist-movie {
+            display: inline-block;
+            margin: 5px;
+            text-align: center;
+        }
+
+        .playlist-movie img {
+            width: 100px;
+            height: 150px;
+            display: block;
+        }
+
+        .playlist-movie-title {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="main-container">
+        <header>
+            <h1>Welcome to Movie Library</h1>
+            <input type="text" id="search-input" placeholder="Search for a movie...">
+            <button id="search-button">Search</button>
+            <button id="home-button">Home</button>
+            <button id="logout-button">Logout</button>
+        </header>
+        <div id="playlists-container"></div>
+        <main id="movie-container"></main>
+    </div>
+    <h1 id="playlist-name"></h1>
+    <div id="playlist-movies" class="movies-container"></div>
+    <!-- <footer>
+        <p>&copy; 2024 Movie Library</p>
+    </footer> -->
+    <script>
+        // Function to log out user
+        function logoutUser() {
+            localStorage.removeItem('authenticated');
+            localStorage.removeItem('loggedInUser');
+            window.location.href = '/src/login/login.html';
+        }
+
+        // Check if user is authenticated, if not, redirect to login page
+        if (!localStorage.getItem('authenticated')) {
+            window.location.href = '/src/login/login.html';
+        }
+
+        // Add event listener to logout button
+        document.getElementById('logout-button').addEventListener('click', logoutUser);
+
+        document.getElementById('home-button').addEventListener('click', () => {
+            window.location.href = 'index.html'; // Navigate to the home page
+        });
+
+
+        // Load playlists when the page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            loadPlaylists();
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>

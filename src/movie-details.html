@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #movie-details {
+            background-color: #34495e;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            overflow-x: auto; /* Enable horizontal scrolling if needed */
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+        }
+
+        p {
+            margin: 5px 0;
+        }
+
+        .detail-label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="movie-details"></div>
+
+    <script>
+        // Fetch IMDb ID from URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const imdbID = urlParams.get('imdbID');
+
+        // Fetch movie details using IMDb ID
+        fetchMovieDetails(imdbID)
+            .then(movieDetails => {
+                displayMovieDetails(movieDetails);
+            })
+            .catch(error => {
+                console.error('Error fetching movie details:', error);
+            });
+
+        function fetchMovieDetails(movieId) {
+            const apiKey = '85838622'; // Replace with your OMDb API key
+            const url = `http://www.omdbapi.com/?i=${movieId}&apikey=${apiKey}`;
+
+            return fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.Response === 'True') {
+                        return data;
+                    } else {
+                        throw new Error(data.Error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching movie details:', error);
+                });
+        }
+
+        function displayMovieDetails(movieDetails) {
+            const detailsContainer = document.getElementById('movie-details');
+            detailsContainer.innerHTML = `
+                <h1>${movieDetails.Title}</h1>
+                <img src="${movieDetails.Poster !== 'N/A' ? movieDetails.Poster : 'placeholder.jpg'}" alt="${movieDetails.Title}">
+                <p><span class="detail-label">Year:</span> ${movieDetails.Year}</p>
+                <p><span class="detail-label">Rated:</span> ${movieDetails.Rated}</p>
+                <p><span class="detail-label">Released:</span> ${movieDetails.Released}</p>
+                <p><span class="detail-label">Runtime:</span> ${movieDetails.Runtime}</p>
+                <p><span class="detail-label">Genre:</span> ${movieDetails.Genre}</p>
+                <p><span class="detail-label">Director:</span> ${movieDetails.Director}</p>
+                <p><span class="detail-label">Writer:</span> ${movieDetails.Writer}</p>
+                <p><span class="detail-label">Actors:</span> ${movieDetails.Actors}</p>
+                <p><span class="detail-label">Plot:</span> ${movieDetails.Plot}</p>
+                <p><span class="detail-label">Language:</span> ${movieDetails.Language}</p>
+                <p><span class="detail-label">Country:</span> ${movieDetails.Country}</p>
+                <p><span class="detail-label">Awards:</span> ${movieDetails.Awards}</p>
+                <p><span class="detail-label">IMDb Rating:</span> ${movieDetails.imdbRating}</p>
+            `;
+        }
+    </script>
+</body>
+</html>

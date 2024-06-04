@@ -1,0 +1,239 @@
+/* General Styles */
+body {
+    font-family: Lato,sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding-top: 30px;
+    min-height: 70px;
+    border-bottom: #77a6f7 3px solid;
+}
+
+header h1 {
+    text-align: center;
+    text-transform: uppercase;
+    margin: 0;
+    font-size: 24px;
+}
+
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Links */
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #77a6f7;
+}
+
+/* Popup Styles */
+#popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+#popup input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#popup button {
+    width: 100%;
+    background: #333;
+    color: #fff;
+    border: 0;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#popup button:hover {
+    background: #77a6f7;
+}
+
+#popup-close {
+    cursor: pointer;
+    color: #333;
+    font-size: 20px;
+    float: right;
+}
+
+.popup-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #F6F6F6;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    width: 400px;
+}
+
+#new-playlist-name {
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    border: 1px solid #e9e9e9;
+    outline: none;
+    background-color: white;
+    font-size: 15px;
+    padding: 0px 16px;
+    border-radius: 22px;
+}
+
+#visibility-container{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    height: 60px;
+}
+
+.playlist-visibility-toggle {
+    width: 30px;
+}
+
+.popup-content {
+    text-align: center;
+}
+
+.close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.close-popup:hover {
+    color: red;
+}
+
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 500;
+}
+
+
+
+.existing-playlist-box{
+    display: flex;
+    margin: 10px 0px;
+}
+
+.existing-playlist-box input {
+    width: 15px;
+    height: 15px;
+    border: 1px solid #e9e9e9;
+    margin-right: 8px;
+    background-color: white;
+}
+
+#create-playlist-button {
+    margin: auto;
+    width: 50%;
+    margin-top: 20px;
+    background-color: #E5354D;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+} 
+
+
+
+
+
+
+/* movie box css */
+#playlist-movie-container, #movie-container {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+#playlist-movie-image, #movie-image {
+    height: 250px;
+    width: 100%;
+}
+
+.playlist-movie-box, .movie-box {
+    width: 20%;
+    box-sizing: border-box;
+    padding: 16px 10px;
+}
+
+#playlist-movie-title, #movie-title {
+    color: rgb(34, 34, 34);
+    font-size: 18px;
+    width: 100%;
+    margin: 8px 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#playlist-movie-year, #movie-year{
+    margin: 6px 0px;
+}
+
+#playlist-add-to-playlist-button, #add-to-playlist-button {
+    margin: auto;
+    width: 100%;
+    background-color: #E5354D;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.delete-playlist-button {
+    width: 150px !important;
+    margin-left: 16px !important;
+    margin-right: 16px !important;
+}

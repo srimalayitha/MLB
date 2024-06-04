@@ -17,12 +17,12 @@ function loginUser(email, password) {
     if (storedPassword === password) {
         localStorage.setItem('authenticated', 'true');
         localStorage.setItem('loggedInUser', email);
-        window.location.href = '/src/index.html';
+        window.location.href = '/index.html';
     } else {
         alert('Invalid email or password');
     }
 }
 
 function redirectToSignUp() {
-    window.location.href = '/src/signup/signup.html';
+    window.location.href = '/signup/signup.html';
 }

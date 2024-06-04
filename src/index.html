@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Library</title>
-    <link rel="stylesheet" href="/src/common/common.css">
-    <link rel="stylesheet" href="/src/common/header.css">
+    <link rel="stylesheet" href="/common/common.css">
+    <link rel="stylesheet" href="/common/header.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -15,7 +15,7 @@
         style="display: flex;position: fixed;width: 100%; height: 75px;align-items: center;background-color: #F6F6F6;border: 1px solid #e9e9e9;top:0px">
         <div style="position:absolute;left: 10px;display: flex;align-items: center;height: 100%;">
             <div>
-                <img src="/src/images/bookmyshow.png" width="80px" height="40px">
+                <img src="/images/bookmyshow.png" width="80px" height="40px">
             </div>
             <div style="margin-left: 24px;cursor: pointer;margin-top: -6px;"><button
                     style="border: none;padding: 0px;font-size: 14px;cursor: pointer" id="home-button">Home</button>
@@ -47,12 +47,12 @@
         function logoutUser() {
             localStorage.removeItem('authenticated');
             localStorage.removeItem('loggedInUser');
-            window.location.href = '/src/login/login.html';
+            window.location.href = '/login/login.html';
         }
 
         // Check if user is authenticated, if not, redirect to login page
         if (!localStorage.getItem('authenticated')) {
-            window.location.href = '/src/login/login.html';
+            window.location.href = '/login/login.html';
         }
 
         // Add event listener to logout button

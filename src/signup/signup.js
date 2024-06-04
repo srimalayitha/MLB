@@ -15,9 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function signupUser(email, password) {
     localStorage.setItem(email, password);
     localStorage.setItem(`${email}_playlists`, JSON.stringify({}));
-    window.location.href = '/src/login/login.html';
+    window.location.href = '/login/login.html';
 }
 
 function redirectToLogin() {
-    window.location.href = '/src/login/login.html';
+    window.location.href = '/login/login.html';
 }

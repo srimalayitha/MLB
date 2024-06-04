@@ -72,7 +72,7 @@ function loadPlaylists() {
         });
         moviesHTML = `<div id="playlist-movie-container">${moviesHTML}</div>`
 
-        const shareLinkId = `${window.location.origin}/src/playlist-details/playlist-details.html?email=${userEmail}&name=${playlistName}`
+        const shareLinkId = `${window.location.origin}/playlist-details/playlist-details.html?email=${userEmail}&name=${playlistName}`
 
         outer += `<div style="display:flex;width:85%;margin:auto;margin-top:16px"><h3>${playlistName} (${visibility})</h3>
         ${visibility === 'public' ? `<button class="share-button" data-shareLinkId="${shareLinkId}" id="playlist-add-to-playlist-button" data-playlist="${playlistName}">Share</button>` : ''}

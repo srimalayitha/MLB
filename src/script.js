@@ -6,13 +6,6 @@ function getLoggedInUserEmail() {
 }
 
 function addEventListenersForButtons() {
-    document.querySelectorAll('.modify-playlist-button').forEach(button => {
-        button.addEventListener('click', event => {
-            const playlistName = event.target.getAttribute('data-playlist');
-            modifyPlaylistVisibility(playlistName);
-        });
-    });
-
     document.querySelectorAll('.delete-playlist-button').forEach(button => {
         button.addEventListener('click', event => {
             const playlistName = event.target.getAttribute('data-playlist');
@@ -27,26 +20,44 @@ function addEventListenersForButtons() {
             removeMovieFromPlaylist(playlistName, imdbID);
         });
     });
+
+
+    document.querySelectorAll('.share-button').forEach(button => {
+        button.addEventListener('click', event => {
+            const shareLinkId = event.target.getAttribute('data-shareLinkId');
+            navigator.clipboard.writeText(shareLinkId);
+            alert('Playlist link copied to clipboard');
+        });
+    });
+
+    document.getElementById('search-button').addEventListener('click', function () {
+        const searchTerm = document.getElementById('search-input').value.trim();
+        if (searchTerm) {
+            fetchMovies(searchTerm);
+        } else {
+            alert('Please enter a movie name');
+        }
+    });
 }
 
 function loadPlaylists() {
     const currentLocation = window.location.pathname;
-    const playlistsContainer = document.getElementById('playlists-container');
-    playlistsContainer.innerHTML = '';
 
     if (currentLocation.includes("playlist-details.html")) {
         return;
     }
+    const playlistsContainer = document.getElementById('playlists-container');
+    playlistsContainer.innerHTML = '';
 
     const userEmail = getLoggedInUserEmail();
     let playlists = JSON.parse(localStorage.getItem(`${userEmail}_playlists`)) || {};
 
-    // Ensure all playlists have unique IDs
     playlists = assignIdsToPlaylists(playlists, userEmail);
     let outer = '';
     Object.keys(playlists).forEach(playlistName => {
         let moviesHTML = '';
         const playlistMovies = playlists[playlistName].movies || [];
+        const visibility = playlists[playlistName].visibility || 'private';
 
         playlistMovies.forEach(movie => {
             moviesHTML += `
@@ -61,53 +72,16 @@ function loadPlaylists() {
         });
         moviesHTML = `<div id="playlist-movie-container">${moviesHTML}</div>`
 
-        outer +=  `<div style="display:flex"><h3>${playlistName}</h3>
-        <button class="share-button" onclick="showShareBox(${shareLinkId})" id="playlist-add-to-playlist-button" data-playlist="${playlistName}">Share</button>
+        const shareLinkId = `${window.location.origin}/src/playlist-details/playlist-details.html?email=${userEmail}&name=${playlistName}`
+
+        outer += `<div style="display:flex;width:85%;margin:auto;margin-top:16px"><h3>${playlistName} (${visibility})</h3>
+        ${visibility === 'public' ? `<button class="share-button" data-shareLinkId="${shareLinkId}" id="playlist-add-to-playlist-button" data-playlist="${playlistName}">Share</button>` : ''}
         <button class="delete-playlist-button" id="playlist-add-to-playlist-button" data-playlist="${playlistName}">Delete</button></div>
         ${moviesHTML} `;
     });
-    console.log(outer);
     playlistsContainer.innerHTML = outer
 
     addEventListenersForButtons();
-}
-
-function generatePlaylistLink(playlistName) {
-    const userEmail = getLoggedInUserEmail();
-    const playlists = JSON.parse(localStorage.getItem(`${userEmail}_playlists`)) || {};
-    const playlist = playlists[playlistName];
-    if (playlist) {
-        return `http://mlb.com/playlist?name=${encodeURIComponent(playlistName)}&id=${encodeURIComponent(playlist.id)}
-        `;
-    }
-    return '';
-}
-
-function showShareBox(shareLinkId) {
-    const shareLinkInput = document.getElementById(shareLinkId);
-    shareLinkInput.style.display = 'block';
-}
-
-function copyToClipboard(elementId) {
-    const shareLinkInput = document.getElementById(elementId);
-    shareLinkInput.select();
-    document.execCommand('copy');
-    shareLinkInput.style.display = 'none';
-    alert('Link copied to clipboard!');
-}
-
-function modifyPlaylistVisibility(playlistName) {
-    const userEmail = getLoggedInUserEmail();
-    let playlists = JSON.parse(localStorage.getItem(`${userEmail}_playlists`)) || {};
-
-    if (playlists[playlistName]) {
-        const currentVisibility = playlists[playlistName].visibility;
-        const newVisibility = currentVisibility === 'public' ? 'private' : 'public';
-        playlists[playlistName].visibility = newVisibility;
-        localStorage.setItem(`${userEmail}_playlists`, JSON.stringify(playlists));
-        alert(`Visibility of playlist "${playlistName}" updated to ${newVisibility}`);
-        loadPlaylists(); // Reload playlists after modification
-    }
 }
 
 function deletePlaylist(playlistName) {
@@ -134,49 +108,33 @@ function removeMovieFromPlaylist(playlistName, imdbID) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-
-    // Parse URL parameters
+document.addEventListener('DOMContentLoaded', function () {
     const params = new URLSearchParams(window.location.search);
     const playlistName = params.get('name');
-    const playlistId = params.get('id');
+    const playlistEmail = params.get('email');
 
-    // Retrieve playlist data from local storage
-    const userEmail = getLoggedInUserEmail();
-    const playlists = JSON.parse(localStorage.getItem('${userEmail}_playlists')) || {};
-    // const playlist = playlists.find(p => p.name === playlistName && p.id === playlistId);
-    const playlist = playlists[playlistName];
-
-    if (playlist && playlist.id === playlistId) {
-        // Display playlist details
-        const playlistDetailsContainer = document.getElementById('playlist-details');
-        playlistDetailsContainer.innerHTML = `
-            <h2>Playlist Name: ${playlistName}</h2>
-            <p>Description: ${playlist.description}</p>
-            <h3>Movies:</h3>
-            <ul>
-                ${playlist.movies.map(movie => `<li>${movie.Title} (${movie.Year})</li>`).join('')}
-            </ul>
-        `;
+    const playlists = JSON.parse(localStorage.getItem(`${playlistEmail}_playlists`)) || {};
+    const playlistEntry = playlists[playlistName];
+    if (playlistEntry && playlistEntry.visibility === "public") {
+        let moviesHTML = '';
+        playlistEntry.movies.forEach(movie => {
+            moviesHTML += `
+                <div class="playlist-movie-box"> 
+                    <a href="movie-details.html?imdbID=${movie.imdbID}">
+                        <img src="${movie.Poster !== 'N/A' ? movie.Poster : 'placeholder.jpg'}" alt="${movie.Title}" id="playlist-movie-image">
+                        <h2 id="playlist-movie-title">${movie.Title}</h2>
+                        <p id="playlist-movie-year">${movie.Year}</p>
+                    </a>
+                </div>`
+        })
+        moviesHTML = `<div style="display:flex;width:80%;margin:auto;margin-top:16px"><h3>${playlistName}</h3></div><div id="playlist-movie-container">${moviesHTML}</div>`;
+        document.getElementById('playlist-details').innerHTML = moviesHTML;
     } else {
-        // Handle case when playlist is not found or ID mismatch
-        const playlistDetailsContainer = document.getElementById('playlist-details');
-        // playlistDetailsContainer.innerHTML = `<p>Playlist not found!</p>`;
+        document.getElementById('playlist-details').innerHTML = '';
     }
 });
 
-
-
-    document.getElementById('search-button').addEventListener('click', function() {
-        const searchTerm = document.getElementById('search-input').value.trim();
-        if (searchTerm) {
-            fetchMovies(searchTerm);
-        } else {
-            alert('Please enter a movie name');
-        }
-    });
-
-    loadPlaylists();
+loadPlaylists();
 
 function fetchMovies(query) {
     const playlistsContainer = document.getElementById('playlists-container');
@@ -269,16 +227,16 @@ function openCreatePlaylistPopup(movieData) {
 
     document.getElementById('create-playlist-button').addEventListener('click', () => {
         const playlistName = playlistNameInput.value.trim();
-        const value = document.getElementById('existing-playlists-select').value;
+        const element = document.getElementById('existing-playlists-select');
 
-        if(playlistName) {
+        if (playlistName) {
             const visibility = visibilityInput.value === '0' ? 'public' : 'private';
             createPlaylist(playlistName, movieData, visibility);
             document.body.removeChild(createPlaylistPopup);
-        } else if(value) {
-            addMovieToPlaylist(value, movieData);
+        } else if (element) {
+            addMovieToPlaylist(element.value, movieData);
             document.body.removeChild(createPlaylistPopup)
-        }else {
+        } else {
             alert('Please enter a playlist name');
         }
     });

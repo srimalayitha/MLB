@@ -1,44 +1,3 @@
-/* General Styles */
-body {
-    font-family: Lato,sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
-}
-
-.container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
-}
-
-header {
-    background: #333;
-    color: #fff;
-    padding-top: 30px;
-    min-height: 70px;
-    border-bottom: #77a6f7 3px solid;
-}
-
-header h1 {
-    text-align: center;
-    text-transform: uppercase;
-    margin: 0;
-    font-size: 24px;
-}
-
-footer {
-    background: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
-/* Links */
 a {
     color: #333;
     text-decoration: none;
@@ -192,8 +151,9 @@ a:hover {
 /* movie box css */
 #playlist-movie-container, #movie-container {
     display: flex;
-    width: 100%;
+    width: 80%;
     flex-wrap: wrap;
+    margin: auto;
 }
 
 #playlist-movie-image, #movie-image {
@@ -202,9 +162,12 @@ a:hover {
 }
 
 .playlist-movie-box, .movie-box {
-    width: 20%;
+    width: 18%;
     box-sizing: border-box;
     padding: 16px 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    margin: 24px 1% 0px 1%;
 }
 
 #playlist-movie-title, #movie-title {
@@ -232,8 +195,14 @@ a:hover {
     cursor: pointer;
 }
 
-.delete-playlist-button {
-    width: 150px !important;
+.share-button, .delete-playlist-button {
+    width: 75px !important;
     margin-left: 16px !important;
-    margin-right: 16px !important;
+    margin-right: 0px !important;
+}
+
+#playlists-container {
+    height: calc(100% - 75px);
+    overflow: scroll;
+    margin-top: 75px;
 }

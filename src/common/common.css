@@ -1,0 +1,12 @@
+body {
+    margin: 0px;
+    font-family: Lato, sans-serif;
+}
+
+button {
+    font-family: Lato, sans-serif;
+}
+
+.display-flex {
+    display: flex;
+}
